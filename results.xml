@@ -1,6 +1,0 @@
-<testsuites name="results">
-  <testsuite name="all" package="all">
-    <property name="random_seed" value="1772909885" />
-    <testcase name="test_random" classname="test_adder" file="/home/gou/OpenLane/designs/registered_adder/test_adder.py" lineno="6" time="0.011935234069824219" sim_time_ns="941.0" ratio_time="78842.19065121854" />
-  </testsuite>
-</testsuites>
