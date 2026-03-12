@@ -1,0 +1,23 @@
+# 1. Read the Liberty file first
+read_liberty -lib /home/gou/.ciel/ciel/sky130/versions/0fe599b2afb6708d281543108caf8310912f54af/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+# 2. Read the Verilog design
+read_verilog adder.v
+
+# 3. Use the general 'synth' macro command (This automatically runs techmap)
+synth -top adder
+
+# 4. Map Flip-Flops (The one step you need that the purely combinational Vedic Multiplier didn't)
+dfflibmap -liberty /home/gou/.ciel/ciel/sky130/versions/0fe599b2afb6708d281543108caf8310912f54af/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+# 5. Map Combinational logic using ABC
+abc -liberty /home/gou/.ciel/ciel/sky130/versions/0fe599b2afb6708d281543108caf8310912f54af/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+# 6. Flatten the hierarchy (as done in the repo)
+flatten
+
+# 7. Print the final statistics 
+stat -liberty /home/gou/.ciel/ciel/sky130/versions/0fe599b2afb6708d281543108caf8310912f54af/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+# 8. Write the final netlist (using -noattr as done in the repo to keep it clean)
+write_verilog -noattr adder_netlist.v
