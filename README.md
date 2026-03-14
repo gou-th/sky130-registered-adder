@@ -12,7 +12,7 @@ Full front-to-back physical design of an 8-bit registered adder on the **SkyWate
 ## Post-Routing PPA Metrics
 
 | Metric | Value | 
-| :--- | :--- | 
+| :--- | :--- |
 | **Technology Node** | SkyWater 130nm | 
 | **Core Area** | 1096.05 µm² |
 | **Clock Frequency** | 100 MHz |
