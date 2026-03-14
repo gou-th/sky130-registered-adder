@@ -89,7 +89,7 @@ iverilog -DFUNCTIONAL -DUNIT_DELAY=#1 \
 
 ---
 
-## 📂 Repository Structure
+## Repository Structure
 ```
 ├── src/
 │   ├── adder.v                # Behavioral RTL
@@ -105,16 +105,22 @@ iverilog -DFUNCTIONAL -DUNIT_DELAY=#1 \
 
 ---
 
-## ⚙️ Reproducing the Flow
+## Reproducing the Flow
 
-**Synthesis:**
+### Prerequisites
+- Docker Desktop installed and running
+- Yosys, iVerilog, GTKWave installed (`sudo apt install yosys iverilog gtkwave`)
+- OpenLane repo cloned (`git clone https://github.com/The-OpenROAD-Project/OpenLane`)
+- Sky130 PDK standard cell liberty files (installed via OpenLane's `make pdk`)
+
+### Synthesis
 ```bash
 yosys -p "read_verilog src/adder.v; synth -top adder; \
   dfflibmap -liberty <sky130.lib>; abc -liberty <sky130.lib>; \
   write_verilog -noattr netlist/adder_netlist.v"
 ```
 
-**GLS:**
+### GLS
 ```bash
 iverilog -DFUNCTIONAL -DUNIT_DELAY=#1 \
   <sky130_models>/sky130_fd_sc_hd.v <sky130_models>/primitives.v \
@@ -122,15 +128,22 @@ iverilog -DFUNCTIONAL -DUNIT_DELAY=#1 \
 gtkwave dump.vcd
 ```
 
-**Physical Design:**
+### Physical Design
 ```bash
-make mount                          # Start OpenLane Docker container
+# Copy design files into OpenLane designs directory
+cp -r . <openlane_root>/designs/registered_adder
+
+# Start OpenLane Docker container
+cd <openlane_root>
+make mount
+
+# Inside the container
 ./flow.tcl -design registered_adder -tag run_1
 ```
 
 ---
 
-## 🛠️ Tools
+## Tools
 
 | Tool | Purpose |
 | :--- | :--- |
