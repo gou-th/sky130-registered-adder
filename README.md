@@ -70,7 +70,7 @@ write_verilog -noattr adder_netlist.v
 
 ---
 
-## 🔬 GLS Debugging: Resolving the X-State Problem
+## GLS Debugging: Resolving the X-State Problem
 
 **Problem:** Sky130 flip-flops power up in an unknown `X` state. When using Cocotb, VPI bridging delays caused the active-low reset to miss the Time-0 initialization window, permanently locking outputs to `X`.
 
