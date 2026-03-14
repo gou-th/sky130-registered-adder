@@ -50,11 +50,11 @@ abc -liberty sky130_fd_sc_hd__tt_025C_1v80.lib
 write_verilog -noattr adder_netlist.v
 ```
 
-**Gate-Level Simulation (iVerilog + GTKWave)** — netlist verified functionally before handing off to physical design. Both Cocotb (Python) and a Verilog testbench were used; the Verilog testbench was required for GLS correctness [`see Debugging section`]([(https://github.com/gou-th/sky130-registered-adder?tab=readme-ov-file#-gls-debugging-resolving-the-x-state-problem)])
+**Gate-Level Simulation (iVerilog + GTKWave)** — netlist verified functionally before handing off to physical design. Both Cocotb (Python) and a Verilog testbench were used; the Verilog testbench was required for GLS correctness [`see Debugging section`](https://github.com/gou-th/sky130-registered-adder?tab=readme-ov-file#-gls-debugging-resolving-the-x-state-problem)
 
 ### Phase 2 — Automated (OpenLane via Docker)
 
-[`config.json`](openlane/config.json)( was written to define constraints; OpenLane ran floorplan, placement, CTS, and routing automatically:
+[`config.json`](openlane/config.json) was written to define constraints; OpenLane ran floorplan, placement, CTS and routing automatically:
 - **Routing:** TritonRoute — zero DRC violations
 - **Signoff:** Magic DRC  | Netgen LVS
 
