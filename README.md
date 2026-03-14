@@ -4,8 +4,6 @@
 ![PDK](https://img.shields.io/badge/PDK-Sky130-brightgreen)
 ![Synthesis](https://img.shields.io/badge/Synthesis-Yosys-yellow)
 ![Flow](https://img.shields.io/badge/PnR-OpenLane%20%28Docker%29-orange)
-![GLS](https://img.shields.io/badge/GLS-iVerilog%20%2B%20GTKWave-purple)
-![Status](https://img.shields.io/badge/DRC%2FLVS-Passed-success)
 
 Full front-to-back physical design of an 8-bit registered adder on the **SkyWater 130nm** open-source PDK. The flow was intentionally split: synthesis and gate-level simulation were done manually step by step, with OpenLane (Docker) handling automated place-and-route from a GLS-verified netlist.
 
