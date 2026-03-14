@@ -11,23 +11,23 @@ Full front-to-back physical design of an 8-bit registered adder on the **SkyWate
 
 ## Post-Routing PPA Metrics
 
-| Metric | Value | Notes |
-| :--- | :--- | :--- |
-| **Technology Node** | SkyWater 130nm | `sky130_fd_sc_hd` high-density library |
-| **Core Area** | 1096.05 µm² | ~50% core utilization |
-| **Clock Frequency** | 100 MHz | 10.0 ns period |
-| **Critical Path Delay** | 1.44 ns | 8.56 ns positive slack |
-| **Setup / Hold Violations** | 0 | Timing closure fully achieved |
-| **Total Power (typical)** | ~100 µW | Switching: ~37.2 µW |
-| **Total Standard Cells** | 176 | Including `decap` and `fill` cells |
-| **Sequential Cells** | 8 | Sky130 D-Flip Flops (`dfrtp`) |
-| **Wire Length / Vias** | 1324 / 447 | Post-routing |
+| Metric | Value | 
+| :--- | :--- | 
+| **Technology Node** | SkyWater 130nm | 
+| **Core Area** | 1096.05 µm² |
+| **Clock Frequency** | 100 MHz |
+| **Critical Path Delay** | 1.44 ns |
+| **Setup / Hold Violations** | 0 |
+| **Total Power (typical)** | ~100 µW |
+| **Total Standard Cells** | 176 | 
+| **Sequential Cells** | 8 | 
+| **Wire Length / Vias** | 1324 / 447 | 
 
 ---
 
 ## Architecture
 
-8-bit combinational adder feeding a synchronous output register — creating a clean sequential boundary for STA.
+8-bit combinational adder feeding a synchronous output register -
 ```
   a[7:0] ──┐
             ├──► [8-bit Adder] ──► [8-bit Register] ──► sum[7:0]
@@ -50,11 +50,11 @@ abc -liberty sky130_fd_sc_hd__tt_025C_1v80.lib
 write_verilog -noattr adder_netlist.v
 ```
 
-**Gate-Level Simulation (iVerilog + GTKWave)** — netlist verified functionally before handing off to physical design. Both Cocotb (Python) and a pure Verilog testbench were used; the Verilog testbench was required for GLS correctness (see Debugging section).
+**Gate-Level Simulation (iVerilog + GTKWave)** — netlist verified functionally before handing off to physical design. Both Cocotb (Python) and a Verilog testbench were used; the Verilog testbench was required for GLS correctness [`see Debugging section`]([(https://github.com/gou-th/sky130-registered-adder?tab=readme-ov-file#-gls-debugging-resolving-the-x-state-problem)])
 
 ### Phase 2 — Automated (OpenLane via Docker)
 
-A `config.json` was written to define constraints; OpenLane ran floorplan, placement, CTS, and routing automatically:
+[`config.json`](openlane/config.json)( was written to define constraints; OpenLane ran floorplan, placement, CTS, and routing automatically:
 - **Routing:** TritonRoute — zero DRC violations
 - **Signoff:** Magic DRC  | Netgen LVS
 
@@ -65,7 +65,7 @@ A `config.json` was written to define constraints; OpenLane ran floorplan, place
 <p align="center">
   <img src="./images/gds_layout.png" alt="GDSII Layout in KLayout" width="80%">
   <br>
-  <em>Final routed GDSII layout in KLayout. Standard cell rows, PDN stripes, and Metal 1/2 routing visible.</em>
+  <em>Final routed GDSII layout in KLayout</em>
 </p>
 
 ---
@@ -74,7 +74,7 @@ A `config.json` was written to define constraints; OpenLane ran floorplan, place
 
 **Problem:** Sky130 flip-flops power up in an unknown `X` state. When using Cocotb, VPI bridging delays caused the active-low reset to miss the Time-0 initialization window, permanently locking outputs to `X`.
 
-**Solution:** Switched to a pure Verilog testbench (zero VPI overhead, reset asserted at exact picosecond zero) and compiled with functional timing flags:
+**Solution:** Switched to a Verilog testbench (zero VPI overhead, reset asserted at exact instant) and compiled with functional timing flags:
 ```bash
 iverilog -DFUNCTIONAL -DUNIT_DELAY=#1 \
   sky130_fd_sc_hd.v primitives.v \
